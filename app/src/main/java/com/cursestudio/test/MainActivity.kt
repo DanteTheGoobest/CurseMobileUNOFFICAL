@@ -173,8 +173,22 @@ class MainActivity : AppCompatActivity() {
         applyControls()
     }
 
+    // Zoom out by making the page lay out on a wider "virtual screen" and scaling it to fit
     private fun applyZoom() {
-        web.evaluateJavascript("document.documentElement.style.zoom='$zoom'", null)
+        val js = """
+            (function() {
+                var z = $zoom;
+                var w = Math.round(window.screen.width / z);
+                var m = document.querySelector('meta[name=viewport]');
+                if (!m) {
+                    m = document.createElement('meta');
+                    m.name = 'viewport';
+                    document.head.appendChild(m);
+                }
+                m.setAttribute('content', 'width=' + w + ', initial-scale=' + z + ', minimum-scale=0.1, maximum-scale=5, user-scalable=yes');
+            })();
+        """.trimIndent()
+        web.evaluateJavascript(js, null)
     }
 
     private fun changeZoom(delta: Float) {
