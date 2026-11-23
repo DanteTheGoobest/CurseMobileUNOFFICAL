@@ -2,7 +2,9 @@ package com.cursestudio.test
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.ViewGroup
 import android.webkit.CookieManager
 import android.webkit.WebView
@@ -52,6 +54,8 @@ class MainActivity : AppCompatActivity() {
         status = TextView(this).apply {
             textSize = 12f
             setPadding(24, 8, 24, 8)
+            maxLines = 1
+            ellipsize = TextUtils.TruncateAt.END
         }
         root.addView(status)
 
@@ -109,7 +113,7 @@ class MainActivity : AppCompatActivity() {
         val cookieString = CookieManager.getInstance().getCookie("https://www.curseforge.com") ?: ""
         val cookieCount = if (cookieString.isBlank()) 0 else cookieString.split(";").size
         val embedded = web.settings.userAgentString.contains("; wv)")
-        status.text = "[$state] $url\ncookies: $cookieCount | embedded UA (wv): $embedded"
+        status.text = "[$state] ${Uri.parse(url).host} | cookies: $cookieCount | wv: $embedded"
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
