@@ -5,7 +5,7 @@
 
     <application
         android:allowBackup="true"
-        android:label="CurseStudio Test"
+        android:label="CurseMobile"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         <activity
             android:name=".MainActivity"
